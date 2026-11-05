@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruta Lenga · Patagonia austral</title>
+  <meta name="description" content="Ruta Lenga: experiencias en la Patagonia austral. Glaciares, trekking y cielos abiertos entre Chile y Argentina. Sitio de demostración.">
+  <meta name="theme-color" content="#171721">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@360..530&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================
+       Ruta Lenga — demo de landing turística
+       Tokens de diseño: lienzo oscuro, tarjetas grafito, un solo azul de acción
+       ========================================================== */
+    :root {
+      /* Colores */
+      --onyx: #171721;          /* fondo principal */
+      --graphite: #1e1e2a;      /* tarjetas */
+      --obsidian: #272735;      /* superficies interactivas / fondo de imágenes */
+      --slate: #70707d;         /* divisores */
+      --mist: #e2e3ed;          /* bordes finos */
+      --ash: #c3c3cc;           /* texto secundario */
+      --ivory: #ededf3;         /* texto principal */
+      --cobalt: #5266eb;        /* ÚNICO color de acción principal */
+      --white: #ffffff;
+
+      /* Tipografía */
+      --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --w-body: 400;
+      --w-head: 480;
+
+      /* Espaciado y layout */
+      --max: 1200px;
+      --gutter: 24px;
+      --section: 72px;
+      --card-pad: 32px;
+      --gap: 12px;
+
+      /* Radios */
+      --r-card: 12px;
+      --r-pill: 40px;
+      --r-btn: 32px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+    body {
+      margin: 0;
+      background: var(--onyx);
+      color: var(--ivory);
+      font-family: var(--font);
+      font-weight: var(--w-body);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    h1, h2, h3 {
+      font-weight: var(--w-head);
+      margin: 0;
+      color: var(--ivory);
+      text-wrap: balance;
+    }
+    h1 { font-size: clamp(40px, 7.4vw, 65px); line-height: 1.1; letter-spacing: 0.005em; color: var(--white); }
+    h2 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; letter-spacing: 0.01em; }
+    h3 { font-size: 21px; line-height: 1.3; letter-spacing: 0.01em; }
+    p { margin: 0; }
+
+    .container { width: 100%; max-width: calc(var(--max) + var(--gutter) * 2); margin: 0 auto; padding: 0 var(--gutter); }
+
+    .eyebrow {
+      font-size: 14px;
+      line-height: 1;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 16px;
+    }
+    .lead { font-size: 18px; line-height: 1.45; color: var(--ash); max-width: 620px; margin-top: 16px; }
+
+    .skip {
+      position: absolute; left: 16px; top: -60px; z-index: 100;
+      background: var(--ivory); color: var(--onyx);
+      padding: 10px 16px; border-radius: var(--r-pill); text-decoration: none;
+    }
+    .skip:focus { top: 16px; }
+
+    :focus-visible { outline: 2px solid var(--ivory); outline-offset: 3px; }
+
+    /* ---------- Fondo neutro mientras carga / si falla la imagen ---------- */
+    .ph {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, #2a2a3a 0%, var(--obsidian) 55%, var(--graphite) 100%);
+    }
+    .ph img { width: 100%; height: 100%; object-fit: cover; }
+    .ph.is-broken img { visibility: hidden; }
+
+    /* ---------- Botones (pastillas) ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: var(--r-btn);
+      font: inherit; font-size: 16px; font-weight: var(--w-body); line-height: 1.2;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ivory);
+      transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+    }
+    .btn--primary { background: var(--cobalt); color: var(--white); }
+    .btn--primary:hover { background: #4558d9; }
+    .btn--ghost { border-color: var(--ivory); border-radius: var(--r-pill); }
+    .btn--ghost:hover { background: var(--ivory); color: var(--onyx); }
+    .btn--sm { min-height: 40px; padding: 8px 20px; font-size: 15px; }
+    .icon { width: 20px; height: 20px; flex: none; }
+
+    /* ---------- Navegación ---------- */
+    .nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      transition: background-color .3s ease, backdrop-filter .3s ease, border-color .3s ease;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.is-scrolled,
+    .nav.is-open {
+      background: rgba(23, 23, 33, 0.72);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      backdrop-filter: blur(20px) saturate(140%);
+      border-bottom-color: rgba(226, 227, 237, 0.08);
+    }
+    .nav__inner {
+      max-width: calc(var(--max) + var(--gutter) * 2);
+      margin: 0 auto;
+      padding: 14px var(--gutter);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none; font-size: 18px; font-weight: var(--w-head); letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .brand__mark { width: 28px; height: 28px; }
+    .nav__links { display: flex; gap: 4px; margin: 0 auto; }
+    .nav__links a {
+      text-decoration: none; padding: 8px 18px; border-radius: var(--r-pill);
+      font-size: 15px; color: var(--ivory);
+      transition: background-color .2s ease;
+    }
+    .nav__links a:hover { background: rgba(237, 237, 243, 0.1); }
+    .nav__toggle { display: none; }
+    .nav__links .only-mobile { display: none; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: min(100vh, 980px);
+      min-height: min(100svh, 980px);
+      display: grid; place-items: center;
+      padding: 120px var(--gutter) 96px;
+      text-align: center;
+      isolation: isolate;
+    }
+    .hero__media { position: absolute; inset: 0; z-index: -1; }
+    .hero__media::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 52%, rgba(23,23,33,.35), transparent 70%),
+        linear-gradient(180deg, rgba(23,23,33,.55) 0%, rgba(23,23,33,.25) 35%, rgba(23,23,33,.45) 70%, var(--onyx) 100%);
+    }
+    .hero__content { max-width: 680px; }
+    .hero__content .eyebrow { color: var(--ivory); }
+    .hero__sub {
+      margin: 24px auto 0; max-width: 540px;
+      font-size: 18px; line-height: 1.45; font-weight: var(--w-head); color: var(--ivory);
+    }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 40px; }
+
+    /* ---------- Secciones ---------- */
+    .section { padding: var(--section) 0; }
+    .section--tight { padding-top: 0; }
+    .section--card { background: var(--graphite); }
+    .section__head { margin-bottom: 40px; }
+
+    /* ---------- Tarjetas ---------- */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card {
+      background: var(--graphite);
+      border-radius: var(--r-card);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .card__media { aspect-ratio: 4 / 3; }
+    .card__body { padding: var(--card-pad); display: grid; gap: var(--gap); align-content: start; }
+    .card__body p { color: var(--ash); }
+    .tag {
+      justify-self: start;
+      font-size: 12px; letter-spacing: 0.04em; line-height: 1;
+      padding: 7px 12px;
+      border: 1px solid rgba(226, 227, 237, 0.45);
+      border-radius: var(--r-pill);
+      color: var(--ivory);
+    }
+
+    /* ---------- Texto + foto ---------- */
+    .splits { display: grid; gap: var(--section); }
+    .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+    .split--rev { grid-template-columns: 1fr 1.1fr; }
+    .split--rev .split__media { order: 2; }
+    .split__media { border-radius: var(--r-card); aspect-ratio: 4 / 3; }
+    .split__text p:not(.eyebrow) { color: var(--ash); margin-top: 20px; font-size: 17px; }
+    .checks { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 12px; }
+    .checks li { position: relative; padding-left: 30px; color: var(--ivory); }
+    .checks li::before {
+      content: ""; position: absolute; left: 0; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1px solid var(--ivory);
+      background: radial-gradient(circle, var(--ivory) 0 3px, transparent 3.5px);
+    }
+
+    /* ---------- Itinerario ---------- */
+    .days { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--gap); }
+    .day {
+      display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: baseline;
+      background: var(--graphite); border-radius: var(--r-card);
+      padding: 24px var(--card-pad);
+    }
+    .day__num { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ash); }
+    .day h3 { font-size: 19px; }
+    .day p { color: var(--ash); margin-top: 4px; }
+    .note { margin-top: 20px; font-size: 14px; color: var(--ash); }
+
+    /* ---------- Temporadas ---------- */
+    .seasons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .season {
+      background: var(--onyx); border-radius: var(--r-card);
+      padding: var(--card-pad); display: grid; gap: var(--gap); align-content: start;
+    }
+    .season__months { font-size: 14px; color: var(--ash); letter-spacing: 0.04em; }
+    .season p { color: var(--ash); }
+
+    /* ---------- Galería ---------- */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 260px; gap: 16px; }
+    .g { margin: 0; position: relative; border-radius: var(--r-card); overflow: hidden; }
+    .g--wide { grid-column: span 2; grid-row: span 2; }
+    .g .ph { position: absolute; inset: 0; }
+    .g figcaption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 40px 20px 16px;
+      font-size: 14px; line-height: 1.3; color: var(--ivory);
+      background: linear-gradient(180deg, transparent, rgba(23, 23, 33, 0.8));
+    }
+
+    /* ---------- Contacto ---------- */
+    .contact {
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--graphite); border-radius: var(--r-card); overflow: hidden;
+    }
+    .contact__media { min-height: 380px; }
+    .contact__body { padding: 56px; display: flex; flex-direction: column; justify-content: center; }
+    .contact__body p:not(.eyebrow) { color: var(--ash); margin-top: 20px; font-size: 17px; }
+    .contact__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+    /* ---------- Footer ---------- */
+    .footer { border-top: 1px solid rgba(112, 112, 125, 0.35); padding: 48px 0 40px; }
+    .footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
+    .footer__brand p { color: var(--ash); margin-top: 12px; font-size: 14px; }
+    .footer__links { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; }
+    .footer__links a { text-decoration: none; color: var(--ash); font-size: 15px; }
+    .footer__links a:hover { color: var(--ivory); }
+    .disclaimer {
+      margin-top: 40px; padding-top: 24px;
+      border-top: 1px solid rgba(112, 112, 125, 0.2);
+      font-size: 12px; line-height: 1.6; letter-spacing: 0.01em; font-weight: var(--w-head);
+      color: var(--ash); max-width: 820px;
+    }
+
+    /* ---------- Aparición suave (solo con JS y sin reduced-motion) ---------- */
+    @media (prefers-reduced-motion: no-preference) {
+      .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+      .js .reveal.is-visible { opacity: 1; transform: none; }
+    }
+
+    /* ==========================================================
+       Responsive
+       ========================================================== */
+    @media (max-width: 1024px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .seasons { grid-template-columns: repeat(2, 1fr); }
+      .split { gap: 40px; }
+      .contact__body { padding: 40px; }
+    }
+
+    @media (max-width: 860px) {
+      .nav__links {
+        display: none;
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 4px;
+        padding: 8px var(--gutter) 20px;
+        background: var(--onyx);
+        border-bottom: 1px solid rgba(226, 227, 237, 0.08);
+      }
+      .nav.is-open .nav__links { display: flex; }
+      .nav.is-open { background: var(--onyx); -webkit-backdrop-filter: none; backdrop-filter: none; }
+      .nav__links a { padding: 12px 16px; font-size: 17px; }
+      .nav__cta { margin-left: auto; }
+      .nav__toggle { display: inline-flex; }
+
+      .split, .contact { grid-template-columns: 1fr; }
+      .split--rev .split__media { order: 0; }
+      .split__media { aspect-ratio: 4 / 3; }
+      .contact__media { min-height: 0; aspect-ratio: 16 / 9; }
+      .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
+      .g:last-child { grid-column: span 2; }
+    }
+
+    @media (max-width: 600px) {
+      :root { --gutter: 16px; --section: 56px; --card-pad: 24px; }
+      .nav__inner { gap: 8px; }
+      .nav__cta { display: none; }
+      .nav__links .only-mobile { display: block; }
+      .nav__toggle { margin-left: auto; }
+      .hero { padding: 104px var(--gutter) 72px; }
+      .hero__sub { font-size: 17px; }
+      .hero__actions { flex-direction: column; align-items: stretch; }
+      .cards, .seasons { grid-template-columns: 1fr; }
+      .split { gap: 28px; }
+      .day { grid-template-columns: 1fr; gap: 6px; padding: 20px var(--card-pad); }
+      .gallery { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 16px; }
+      .g, .g--wide, .g:last-child { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
+      .contact__body { padding: 32px var(--card-pad); }
+      .contact__actions .btn { width: 100%; }
+      .footer__inner { flex-direction: column; }
+    }
+  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171721'/%3E%3Cpath d='M5 24 L13 10 L17 17 L20 13 L27 24 Z' fill='none' stroke='%23ededf3' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="brand" href="#inicio" aria-label="Ruta Lenga, inicio">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25 L12.5 9 L17 16.5 L20.5 12 L29 25 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>Ruta Lenga</span>
+      </a>
+      <nav class="nav__links" id="menu" aria-label="Secciones">
+        <a href="#experiencias">Experiencias</a>
+        <a href="#itinerario">Itinerario</a>
+        <a href="#temporadas">Cuándo ir</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto" class="only-mobile">Contacto</a>
+      </nav>
+      <a class="btn btn--ghost btn--sm nav__cta" href="#contacto">Contacto</a>
+      <button class="btn btn--ghost btn--sm nav__toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="hero__media ph">
+        <img
+          src="https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?w=1800&q=75&auto=format&fit=crop"
+          srcset="https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?w=900&q=70&auto=format&fit=crop 900w,
+                  https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?w=1800&q=75&auto=format&fit=crop 1800w,
+                  https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?w=2600&q=75&auto=format&fit=crop 2600w"
+          sizes="100vw"
+          alt="Los Cuernos del Paine iluminados por el amanecer sobre un lago"
+          fetchpriority="high">
+      </div>
+      <div class="hero__content">
+        <p class="eyebrow">Patagonia austral · Chile y Argentina</p>
+        <h1>El fin del mapa empieza aquí</h1>
+        <p class="hero__sub">Glaciares que crujen, torres de granito y cielos sin fin. Diseñamos viajes a la Patagonia a tu ritmo, con guías locales y tiempo para mirar.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="https://wa.me/50400000000?text=Hola%2C%20quiero%20planear%20un%20viaje%20a%20la%20Patagonia" target="_blank" rel="noopener">Planear mi viaje</a>
+          <a class="btn btn--ghost" href="#experiencias">Ver experiencias</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCIAS -->
+    <section class="section" id="experiencias">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Experiencias</p>
+          <h2>Seis formas de vivir el sur</h2>
+          <p class="lead">De las pasarelas frente al hielo a los senderos de alta montaña. Cada experiencia se puede combinar en un mismo viaje.</p>
+        </header>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1658312627438-30d1299683fd?w=800&q=70&auto=format&fit=crop" alt="Las tres Torres del Paine sobre la laguna glaciar de su base"></div>
+            <div class="card__body">
+              <span class="tag">Trekking</span>
+              <h3>Base de las Torres</h3>
+              <p>La caminata más icónica del Parque Nacional Torres del Paine: bosques, morrenas y una laguna a los pies de las tres torres.</p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1552751753-0fc84ae5b6c8?w=800&q=70&auto=format&fit=crop" alt="Frente del glaciar Perito Moreno sobre el lago, en el Parque Nacional Los Glaciares"></div>
+            <div class="card__body">
+              <span class="tag">Hielo</span>
+              <h3>Glaciar Perito Moreno</h3>
+              <p>Pasarelas frente a un muro de hielo de decenas de metros. Con suerte, verás y oirás un desprendimiento.</p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1493724798364-c4ca5e3f5fd3?w=800&q=70&auto=format&fit=crop" alt="Monte Fitz Roy con una laguna turquesa a sus pies"></div>
+            <div class="card__body">
+              <span class="tag">Montaña</span>
+              <h3>Fitz Roy y El Chaltén</h3>
+              <p>Senderos que salen desde el mismo pueblo hacia lagunas turquesa y una de las siluetas más reconocibles de los Andes.</p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1758919679414-9f576bb3d55a?w=800&q=70&auto=format&fit=crop" alt="Vista desde el interior de las Capillas de Mármol hacia el agua turquesa del lago"></div>
+            <div class="card__body">
+              <span class="tag">Navegación</span>
+              <h3>Capillas de Mármol</h3>
+              <p>Cavernas de mármol talladas por el agua en el lago General Carrera, recorridas en bote o kayak cuando el viento lo permite.</p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1673209378872-a36ba431f248?w=800&q=70&auto=format&fit=crop" alt="Persona en kayak frente a grandes témpanos de hielo"></div>
+            <div class="card__body">
+              <span class="tag">Navegación</span>
+              <h3>Kayak entre témpanos</h3>
+              <p>Remar despacio entre bloques de hielo azul, con guía y equipo incluido. Una forma silenciosa de acercarse al glaciar.</p>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1779159175036-5cba4748b1f7?w=800&q=70&auto=format&fit=crop" alt="Guanacos en la estepa con montañas nevadas al fondo"></div>
+            <div class="card__body">
+              <span class="tag">Fauna</span>
+              <h3>Estepa y guanacos</h3>
+              <p>Safaris fotográficos por la estepa: guanacos, cóndores y ñandúes, con el macizo del Paine de telón de fondo.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPLITS -->
+    <section class="section section--tight">
+      <div class="container splits">
+        <div class="split reveal">
+          <div class="split__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1610680224983-f9759ce81c7a?w=1200&q=70&auto=format&fit=crop" alt="Ruta recta por la estepa hacia el macizo del Fitz Roy"></div>
+          <div class="split__text">
+            <p class="eyebrow">Por tierra</p>
+            <h2>Rutas largas, horizontes más largos</h2>
+            <p>Buena parte del viaje es el camino: rectas infinitas por la estepa, lagos que cambian de color y montañas que aparecen de golpe en el horizonte. Organizamos traslados privados o compartidos entre cada destino.</p>
+            <ul class="checks">
+              <li>Traslados entre El Calafate, El Chaltén y Puerto Natales</li>
+              <li>Paradas para fotografía en los miradores del camino</li>
+              <li>Cruce de frontera con la documentación lista</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split split--rev reveal">
+          <div class="split__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1637580981009-c13f27517703?w=1200&q=70&auto=format&fit=crop" alt="Senderista en una pasarela de madera frente a los Cuernos del Paine"></div>
+          <div class="split__text">
+            <p class="eyebrow">A tu ritmo</p>
+            <h2>Senderos para cada nivel</h2>
+            <p>No hace falta ser montañista. Hay caminatas cortas a miradores, rutas de día completo y travesías de varios días. Te ayudamos a elegir según tu condición física y el tiempo que tengas.</p>
+            <ul class="checks">
+              <li>Guías locales con experiencia en montaña</li>
+              <li>Opciones de baja, media y alta exigencia</li>
+              <li>Plan B preparado para días de mucho viento</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split reveal">
+          <div class="split__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1505322022379-7c3353ee6291?w=1200&q=70&auto=format&fit=crop" alt="Cielo nocturno estrellado sobre la silueta de las montañas"></div>
+          <div class="split__text">
+            <p class="eyebrow">De noche</p>
+            <h2>Un cielo que casi nadie ve</h2>
+            <p>Lejos de las ciudades, el cielo austral se llena de estrellas. En otoño e invierno, cuando las noches son largas, salimos a mirarlo con calma.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ITINERARIO -->
+    <section class="section" id="itinerario">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Itinerario de ejemplo</p>
+          <h2>Siete días entre dos países</h2>
+          <p class="lead">Una propuesta para inspirarte. Cada viaje se arma a medida: se puede alargar, acortar o cambiar el orden.</p>
+        </header>
+
+        <ol class="days">
+          <li class="day reveal">
+            <span class="day__num">Día 1</span>
+            <div><h3>Llegada a El Calafate</h3><p>Recepción, traslado al alojamiento y caminata suave junto al lago Argentino.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 2</span>
+            <div><h3>Glaciar Perito Moreno</h3><p>Mañana en las pasarelas y navegación opcional frente a la pared de hielo.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 3</span>
+            <div><h3>Ruta a El Chaltén</h3><p>Unas tres horas por tierra. Por la tarde, mirador de los Cóndores.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 4</span>
+            <div><h3>Laguna de los Tres</h3><p>Jornada completa de trekking hasta el pie del Fitz Roy. Exigencia alta.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 5</span>
+            <div><h3>Cruce a Puerto Natales</h3><p>Regreso a El Calafate y cruce de frontera hacia Chile.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 6</span>
+            <div><h3>Base de las Torres</h3><p>El trekking más conocido del parque, con salida temprano.</p></div>
+          </li>
+          <li class="day reveal">
+            <span class="day__num">Día 7</span>
+            <div><h3>Lago Pehoé y despedida</h3><p>Miradores, Salto Grande y regreso para tomar el vuelo.</p></div>
+          </li>
+        </ol>
+        <p class="note">Tiempos aproximados y sujetos al clima. Itinerario de ejemplo, no es una oferta.</p>
+      </div>
+    </section>
+
+    <!-- TEMPORADAS -->
+    <section class="section section--card" id="temporadas">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Cuándo ir</p>
+          <h2>Cada estación, otra Patagonia</h2>
+        </header>
+
+        <div class="seasons">
+          <div class="season reveal">
+            <span class="season__months">Oct – Nov</span>
+            <h3>Primavera</h3>
+            <p>Días que se alargan, menos visitantes y paisajes todavía con nieve en las cumbres.</p>
+          </div>
+          <div class="season reveal">
+            <span class="season__months">Dic – Feb</span>
+            <h3>Verano</h3>
+            <p>Temporada alta. Muchas horas de luz y todos los servicios abiertos, pero también más viento.</p>
+          </div>
+          <div class="season reveal">
+            <span class="season__months">Mar – Abr</span>
+            <h3>Otoño</h3>
+            <p>Los bosques de lenga se tiñen de rojo y dorado. Menos gente y luz suave para fotografía.</p>
+          </div>
+          <div class="season reveal">
+            <span class="season__months">May – Sep</span>
+            <h3>Invierno</h3>
+            <p>Nieve, silencio y noches largas. Algunos senderos y servicios cierran o funcionan con horario reducido.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="section" id="galeria">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Galería</p>
+          <h2>Postales del sur</h2>
+        </header>
+
+        <div class="gallery">
+          <figure class="g g--wide reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1558517286-6b7b81953cb5?w=1200&q=70&auto=format&fit=crop" alt="Los Cuernos del Paine sobre un lago turquesa bajo nubes blancas"></div>
+            <figcaption>Cuernos del Paine</figcaption>
+          </figure>
+          <figure class="g reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1637580980556-085dee659c7e?w=800&q=70&auto=format&fit=crop" alt="Cumbre del Fitz Roy teñida de rosa al amanecer"></div>
+            <figcaption>Fitz Roy al amanecer</figcaption>
+          </figure>
+          <figure class="g reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=800&q=70&auto=format&fit=crop" alt="Picos de granito iluminados por la primera luz del día"></div>
+            <figcaption>Primera luz en el granito</figcaption>
+          </figure>
+          <figure class="g reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1667759047611-08548e6e0b84?w=800&q=70&auto=format&fit=crop" alt="Árboles con hojas amarillas en otoño"></div>
+            <figcaption>Bosque en otoño</figcaption>
+          </figure>
+          <figure class="g reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1620145236362-e9cdd819bf6f?w=800&q=70&auto=format&fit=crop" alt="Grupo de pingüinos sobre el pasto junto a una bahía, con montañas al fondo"></div>
+            <figcaption>Colonia de pingüinos</figcaption>
+          </figure>
+          <figure class="g reveal">
+            <div class="ph"><img loading="lazy" src="https://images.unsplash.com/photo-1586600822178-26dec0f653a9?w=1200&q=70&auto=format&fit=crop" alt="Nube lenticular anaranjada sobre las montañas al atardecer"></div>
+            <figcaption>Nubes lenticulares al atardecer</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="contact reveal">
+          <div class="contact__media ph"><img loading="lazy" src="https://images.unsplash.com/photo-1478827387698-1527781a4887?w=1400&q=70&auto=format&fit=crop" alt="Lago turquesa con montañas nevadas y nubes"></div>
+          <div class="contact__body">
+            <p class="eyebrow">Hablemos</p>
+            <h2>¿Listo para el viaje al sur?</h2>
+            <p>Cuéntanos fechas, cuántas personas viajan y qué te gustaría vivir. Te respondemos con una propuesta a medida.</p>
+            <div class="contact__actions">
+              <a class="btn btn--ghost" href="https://wa.me/50400000000?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20viajes%20a%20la%20Patagonia" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.8 8.4c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.6l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.2-.1.4-.2.6-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.5-.4.7-.5.3-1.1.5-1.7.4-2.7-.5-5-2.8-5.5-5.5-.1-.6.1-1.2.4-1.6Z" fill="currentColor"/></svg>
+                Escríbenos por WhatsApp
+              </a>
+              <a class="btn btn--ghost" href="mailto:hola@ejemplo.com">hola@ejemplo.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a class="brand" href="#inicio">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25 L12.5 9 L17 16.5 L20.5 12 L29 25 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span>Ruta Lenga</span>
+        </a>
+        <p>Viajes a la Patagonia austral.</p>
+      </div>
+      <nav class="footer__links" aria-label="Pie de página">
+        <a href="#experiencias">Experiencias</a>
+        <a href="#itinerario">Itinerario</a>
+        <a href="#temporadas">Cuándo ir</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="disclaimer">Sitio de demostración. “Ruta Lenga” es una marca ficticia creada para mostrar un diseño web; no vende viajes ni representa a ninguna agencia u organismo de turismo. La información de rutas, tiempos y temporadas es orientativa. Fotografías de <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Ruta Lenga — interacciones mínimas (sin dependencias)
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+
+      // 1) Imagen que no carga -> se oculta y queda el fondo neutro
+      document.querySelectorAll('.ph img').forEach(function (img) {
+        function broken() { img.parentElement.classList.add('is-broken'); }
+        if (img.complete && img.naturalWidth === 0 && img.currentSrc) broken();
+        img.addEventListener('error', broken);
+      });
+
+      // 2) Barra de navegación: se "esmerila" al hacer scroll
+      var nav = document.getElementById('nav');
+      function onScroll() { nav.classList.toggle('is-scrolled', window.scrollY > 24); }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // 3) Menú en móvil
+      var toggle = document.getElementById('menuToggle');
+      var menu = document.getElementById('menu');
+      function setOpen(open) {
+        nav.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.textContent = open ? 'Cerrar' : 'Menú';
+      }
+      toggle.addEventListener('click', function () { setOpen(!nav.classList.contains('is-open')); });
+      menu.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+
+      // 4) Aparición suave al entrar en pantalla (se omite con reduced-motion)
+      var items = document.querySelectorAll('.reveal');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        items.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
